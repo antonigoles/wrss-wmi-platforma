@@ -1,3 +1,4 @@
 .secrets.json
 composer.lock
 vendor/
+.idea/
