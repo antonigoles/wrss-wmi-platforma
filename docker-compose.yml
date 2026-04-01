@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+    container_name: wrss-wmi-platforma-app
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - wrss-wmi-platforma-network
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5433
+      DB_DATABASE: main
+      DB_USERNAME: root
+      DB_PASSWORD: abc_root_123
+
+  web:
+    image: nginx:alpine
+    container_name: wrss-wmi-platforma-nginx
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/var/www/html
+      - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - wrss-wmi-platforma-network
+  db:
+    image: postgres:15-alpine
+    container_name: wrss-wmi-platforma-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: main
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: abc_root_123
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - wrss-wmi-platforma-network
+    ports:
+      - "5433:5432"
+
+volumes:
+  db_data:
+
+networks:
+  wrss-wmi-platforma-network:
+    driver: bridge

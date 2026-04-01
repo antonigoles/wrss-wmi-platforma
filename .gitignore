@@ -1,0 +1,3 @@
+.secrets.json
+composer.lock
+vendor/
