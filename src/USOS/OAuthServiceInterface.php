@@ -2,12 +2,6 @@
 
 namespace App\USOS;
 
-use App\Core\DependencyInjection\DependencyContainer;
-use App\Core\Environment\Environment;
-use App\Core\Secrets\Secret;
-use App\Core\Secrets\SecretsServiceInterface;
-use App\Core\Session\SessionInterface;
-
 ;
 
 interface OAuthServiceInterface

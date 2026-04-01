@@ -1,16 +1,3 @@
-<?php
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use App\Authentication\Permissions\Permission;
-use App\DependencyContainer;
-use App\Website\Router\RouterService;
-
-/** @var RouterService $router_service */
-$router_service = DependencyContainer::get(RouterService::class);
-$router_service->set_unauthenticated_redirect_page('/logout.php');
-$router_service->require_permissions([ Permission::DISPLAY_HOME_PAGE ]);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +11,7 @@ $router_service->require_permissions([ Permission::DISPLAY_HOME_PAGE ]);
     <div class="global-container">
         <?php require_once('./components/header.php') ?>
         <div class="main-container">
+            <?php require_once('./components/login-with-usos.php') ?>
         </div>
     </div>
 </body>

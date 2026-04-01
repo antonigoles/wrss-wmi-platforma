@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Secrets;
+namespace App\Secrets;
 
 enum Secret
 {

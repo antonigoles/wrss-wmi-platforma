@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Session;
+namespace App\Session;
 
 class StandardSession implements SessionInterface
 {

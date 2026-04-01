@@ -1,9 +1,9 @@
 <?php
 
-use App\Core\DependencyInjection\DependencyContainer;
-use App\Core\Secrets\Secret;
-use App\Core\Secrets\SecretsServiceInterface;
-use App\Core\Session\SessionInterface;
+use App\DependencyContainer;
+use App\Secrets\Secret;
+use App\Secrets\SecretsServiceInterface;
+use App\Session\SessionInterface;
 use App\USOS\OAuthServiceInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Secrets;
+namespace App\Secrets;
 
 class FileBasedSecretsService implements SecretsServiceInterface
 {
@@ -8,7 +8,7 @@ class FileBasedSecretsService implements SecretsServiceInterface
 
     public function __construct()
     {
-        $secrets_file_content = file_get_contents(__DIR__ .'/../../../.secrets.json');
+        $secrets_file_content = file_get_contents(__DIR__ .'/../../.secrets.json');
         $this->secrets = json_decode(
             $secrets_file_content,
             true

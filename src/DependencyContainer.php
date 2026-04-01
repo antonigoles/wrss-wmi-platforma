@@ -1,18 +1,21 @@
 <?php
 
-namespace App\Core\DependencyInjection;
+namespace App;
 
-use App\Core\Environment\Environment;
-use App\Core\Environment\EnvironmentInterface;
-use App\Core\Secrets\FileBasedSecretsService;
-use App\Core\Secrets\SecretsServiceInterface;
-use App\Core\Session\SessionInterface;
-use App\Core\Session\StandardSession;
+use App\Authentication\AuthenticationServiceInterface;
+use App\Authentication\UsosBasedAuthenticationService;
 use App\Database\DatabaseConnection;
 use App\Database\DatabaseConnectionInterface;
 use App\Database\DatabaseConnectionOptions;
+use App\Environment\Environment;
+use App\Environment\EnvironmentInterface;
+use App\Secrets\FileBasedSecretsService;
+use App\Secrets\SecretsServiceInterface;
+use App\Session\SessionInterface;
+use App\Session\StandardSession;
 use App\USOS\OAuthService as UsosOAuth;
 use App\USOS\OAuthServiceInterface as UsosOAuthServiceInterface;
+use App\Website\Router\RouterService;
 
 class DependencyContainer
 {
@@ -26,6 +29,15 @@ class DependencyContainer
         $environment = new Environment(
             secrets_service: $secrets_service
         );
+        $usos_oauth_service =  new UsosOAuth(
+            session: $session,
+            environment: $environment,
+            secrets_service: $secrets_service
+        );
+        $authentication_service =  new UsosBasedAuthenticationService(
+            oauth_service: $usos_oauth_service,
+            environment: $environment
+        );
 
         $this->map = [
             SessionInterface::class => $session,
@@ -34,13 +46,13 @@ class DependencyContainer
             ),
             SecretsServiceInterface::class => $secrets_service,
             EnvironmentInterface::class => $environment,
-
-            // USOS
-            UsosOAuthServiceInterface::class => new UsosOAuth(
-                session: $session,
-                environment: $environment,
-                secrets_service: $secrets_service
-            ),
+            UsosOAuthServiceInterface::class => $usos_oauth_service,
+            AuthenticationServiceInterface::class => $authentication_service,
+            RouterService::class => new RouterService(
+                $authentication_service,
+                $environment,
+                $session
+            )
         ];
     }
 

@@ -7,8 +7,8 @@ use App\Website\Router\RouterService;
 
 /** @var RouterService $router_service */
 $router_service = DependencyContainer::get(RouterService::class);
-$router_service->set_unauthenticated_redirect_page('/logout.php');
-$router_service->require_permissions([ Permission::DISPLAY_HOME_PAGE ]);
+$router_service->set_unauthenticated_redirect_page('login.php');
+$router_service->require_permissions([ Permission::STUDENT_VOTE ]);
 ?>
 
 <!DOCTYPE html>
@@ -21,10 +21,10 @@ $router_service->require_permissions([ Permission::DISPLAY_HOME_PAGE ]);
     <?php require_once('./styles/style-imports.php') ?>
 </head>
 <body>
-    <div class="global-container">
-        <?php require_once('./components/header.php') ?>
-        <div class="main-container">
-        </div>
+<div class="global-container">
+    <?php require_once('./components/header.php') ?>
+    <div class="main-container">
     </div>
+</div>
 </body>
 </html>

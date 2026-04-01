@@ -1,7 +1,7 @@
 <?php
 
-use App\Core\DependencyInjection\DependencyContainer;
-use App\Core\Environment\EnvironmentInterface;
+use App\DependencyContainer;
+use App\Environment\EnvironmentInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

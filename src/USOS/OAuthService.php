@@ -2,11 +2,10 @@
 
 namespace App\USOS;
 
-use App\Core\DependencyInjection\DependencyContainer;
-use App\Core\Environment\Environment;
-use App\Core\Secrets\Secret;
-use App\Core\Secrets\SecretsServiceInterface;
-use App\Core\Session\SessionInterface;
+use App\Environment\Environment;
+use App\Secrets\Secret;
+use App\Secrets\SecretsServiceInterface;
+use App\Session\SessionInterface;
 
 ;
 
@@ -59,7 +58,7 @@ class OAuthService implements OAuthServiceInterface
 
         $result = json_decode($response, true) ?? null;
 
-        $this->session->write('user_data', $response);
+        $this->session->write('user_data', $result);
 
         return $result;
     }

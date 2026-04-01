@@ -2,11 +2,11 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Core\DependencyInjection\DependencyContainer;
-use App\Core\Environment\EnvironmentInterface;
-use App\Core\Secrets\Secret;
-use App\Core\Secrets\SecretsServiceInterface;
-use App\Core\Session\SessionInterface;
+use App\DependencyContainer;
+use App\Environment\EnvironmentInterface;
+use App\Secrets\Secret;
+use App\Secrets\SecretsServiceInterface;
+use App\Session\SessionInterface;
 use App\USOS\OAuthServiceInterface;
 
 /** @var OAuthServiceInterface $oauth_service */
@@ -76,8 +76,10 @@ if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
     $session->write('oauth_token_secret', $response['oauth_token_secret']);
 
     $base_app_url = $secrets_service->get(Secret::APP_URL);
+    $return_url = $session->read('return_url') ?? $base_app_url;
+    $session->remove('return_url');
 
-    header("Location: $base_app_url");
+    header("Location: $return_url");
     die();
 }
 

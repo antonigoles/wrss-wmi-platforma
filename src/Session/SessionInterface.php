@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Core\Session;
-
-use Serializable;
+namespace App\Session;
 
 interface SessionInterface
 {
