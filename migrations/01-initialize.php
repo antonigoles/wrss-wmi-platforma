@@ -5,7 +5,6 @@ use App\Database\DatabaseConnection;
 
 $connection = DatabaseConnection::get();
 
-    // 1. Tabela Użytkowników
     $connection->query(
         "CREATE TABLE IF NOT EXISTS t_user
         (
@@ -14,46 +13,52 @@ $connection = DatabaseConnection::get();
         []
     );
 
-    // 2. Tabela Ankiet
     $connection->query(
-        "CREATE TABLE IF NOT EXISTS t_poll
+        "CREATE TABLE IF NOT EXISTS t_konkurs_prowadzacych
         (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            question VARCHAR(255) NOT NULL,
-            description TEXT,
+            edycja VARCHAR(255) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );",
         []
     );
 
-    // 3. Tabela Opcji w Ankiecie
     $connection->query(
-        "CREATE TABLE IF NOT EXISTS t_poll_option
+        "CREATE TABLE IF NOT EXISTS t_kp_kategoria
         (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            poll_id INT NOT NULL,
-            label VARCHAR(255) NOT NULL,
-            FOREIGN KEY (poll_id) REFERENCES t_poll(id) ON DELETE CASCADE
+            kp_id INT NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            description TEXT NOT NULL,
+            FOREIGN KEY (kp_id) REFERENCES t_konkurs_prowadzacych(id) ON DELETE CASCADE
         );",
         []
     );
 
-    // 4. Tabela Głosów Użytkowników
     $connection->query(
-        "CREATE TABLE IF NOT EXISTS t_poll_user_vote
+        "CREATE TABLE IF NOT EXISTS t_kp_prowadzacy
+        (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            kp_id INT NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            FOREIGN KEY (kp_id) REFERENCES t_konkurs_prowadzacych(id) ON DELETE CASCADE
+        );",
+        []
+    );
+
+    $connection->query(
+        "CREATE TABLE IF NOT EXISTS t_kt_vote
         (
             usos_id INT NOT NULL,
-            poll_id INT NOT NULL,
-            poll_option_id INT NOT NULL,
+            kt_id INT NOT NULL,
+            prowadzacy_id INT NOT NULL,
             voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             
-            -- Gwarantuje, że dany użytkownik może zagłosować tylko raz w danej ankiecie
-            PRIMARY KEY (usos_id, poll_id),
+            PRIMARY KEY (usos_id, kt_id),
             
-            -- Klucze obce
             FOREIGN KEY (usos_id) REFERENCES t_user(usos_id) ON DELETE CASCADE,
-            FOREIGN KEY (poll_id) REFERENCES t_poll(id) ON DELETE CASCADE,
-            FOREIGN KEY (poll_option_id) REFERENCES t_poll_option(id) ON DELETE CASCADE
+            FOREIGN KEY (kt_id) REFERENCES t_poll(id) ON DELETE CASCADE,
+            FOREIGN KEY (prowadzacy_id) REFERENCES t_kp_prowadzacy(id) ON DELETE CASCADE
         );",
         []
     );
