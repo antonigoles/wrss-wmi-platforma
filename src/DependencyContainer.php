@@ -9,10 +9,14 @@ use App\Database\DatabaseConnectionInterface;
 use App\Database\DatabaseConnectionOptions;
 use App\Environment\Environment;
 use App\Environment\EnvironmentInterface;
+use App\KonkursProwadzacych\KPRepository;
+use App\KonkursProwadzacych\KPService;
 use App\Secrets\FileBasedSecretsService;
 use App\Secrets\SecretsServiceInterface;
 use App\Session\SessionInterface;
 use App\Session\StandardSession;
+use App\User\UserRepository;
+use App\User\UserRepositoryInterface;
 use App\USOS\OAuthService as UsosOAuth;
 use App\USOS\OAuthServiceInterface as UsosOAuthServiceInterface;
 use App\Website\Router\RouterService;
@@ -24,6 +28,9 @@ class DependencyContainer
 
     private function build(): void
     {
+        $database_connection = new DatabaseConnection(
+            connection_options: new DatabaseConnectionOptions()
+        );
         $secrets_service = new FileBasedSecretsService();
         $session = new StandardSession();
         $environment = new Environment(
@@ -34,16 +41,17 @@ class DependencyContainer
             environment: $environment,
             secrets_service: $secrets_service
         );
+        $user_repository = new UserRepository($database_connection);
         $authentication_service =  new UsosBasedAuthenticationService(
             oauth_service: $usos_oauth_service,
-            environment: $environment
+            environment: $environment,
+            user_repository: $user_repository
         );
+        $kp_repository = new KPRepository($database_connection);
 
         $this->map = [
             SessionInterface::class => $session,
-            DatabaseConnectionInterface::class => new DatabaseConnection(
-                connection_options: new DatabaseConnectionOptions()
-            ),
+            DatabaseConnectionInterface::class => $database_connection,
             SecretsServiceInterface::class => $secrets_service,
             EnvironmentInterface::class => $environment,
             UsosOAuthServiceInterface::class => $usos_oauth_service,
@@ -52,6 +60,10 @@ class DependencyContainer
                 $authentication_service,
                 $environment,
                 $session
+            ),
+            UserRepositoryInterface::class => $user_repository,
+            KPService::class => new KPService(
+                kp_repository: $kp_repository
             )
         ];
     }

@@ -18,4 +18,12 @@ class ArrayUtilities
         }
         return true;
     }
+
+    public static function array_has(array $array, callable $predicate): bool
+    {
+        foreach ($array as $element) {
+            if ($predicate($element)) return true;
+        }
+        return false;
+    }
 }

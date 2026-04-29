@@ -5,6 +5,8 @@ namespace App\Authentication;
 use App\Authentication\Permissions\Permission;
 use App\Authentication\Permissions\PermissionCheckResult;
 use App\Environment\EnvironmentInterface;
+use App\User\User;
+use App\User\UserRepositoryInterface;
 use App\USOS\OAuthServiceInterface;
 
 readonly class UsosBasedAuthenticationService implements AuthenticationServiceInterface
@@ -13,6 +15,7 @@ readonly class UsosBasedAuthenticationService implements AuthenticationServiceIn
     public function __construct(
         private OAuthServiceInterface $oauth_service,
         private EnvironmentInterface $environment,
+        private UserRepositoryInterface $user_repository
     ) {}
 
     public function check_permission(Permission $permission): PermissionCheckResult
@@ -36,5 +39,13 @@ readonly class UsosBasedAuthenticationService implements AuthenticationServiceIn
     public function get_reauthentication_page(): string
     {
         return $this->environment->get_app_url() . '/usos_oauth.php';
+    }
+
+    public function get_current_session_user(): ?User
+    {
+        $id = $this->oauth_service->fetch_user_id();
+        if ($id === null) return null;
+        $result = $this->user_repository->get_user_from_usos_id($id);
+        return $result;
     }
 }

@@ -24,7 +24,13 @@ $router_service->require_permissions([ Permission::STUDENT_VOTE ]);
 <div class="global-container">
     <?php require_once('./components/header.php') ?>
     <div class="main-container">
-    <?php require_once('./components/konkurs-prowadzacych-component.php') ?>
+    <?php 
+        if (isset($_GET['id'])) {
+            require_once('./components/konkurs-prowadzacych-component.php');
+        } else {
+            require_once('./components/konkurs-prowadzacych-list-component.php');
+        }
+    ?>
     </div>
 </div>
 </body>
