@@ -35,7 +35,10 @@ class RouterService
 
         if (!$permission_check) {
             $this->session->write("return_url", $this->environment->get_current_path());
-            $url = $this->environment->get_app_url() . $this->unauthorized_page;
+            $url = 
+                $this->environment->get_app_url() 
+                . $this->unauthorized_page
+                . '?next=' . rawurldecode($this->environment->get_current_path());
             header('Location: '.$url);
             die();
         };

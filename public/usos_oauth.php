@@ -8,6 +8,7 @@ use App\Secrets\Secret;
 use App\Secrets\SecretsServiceInterface;
 use App\Session\SessionInterface;
 use App\USOS\OAuthServiceInterface;
+use App\Website\WebsiteUtilities;
 
 /** @var OAuthServiceInterface $oauth_service */
 $oauth_service = DependencyContainer::get(OAuthServiceInterface::class);
@@ -21,20 +22,8 @@ $session = DependencyContainer::get(SessionInterface::class);
 /** @var EnvironmentInterface $environment */
 $environment = DependencyContainer::get(EnvironmentInterface::class);
 
-function sanitize_redirect_url($url, $defaultUrl = '/') {
-    if (empty($url)) {
-        return $defaultUrl;
-    }
-    
-    if (preg_match('/^\/[^\/]/', $url)) {
-        return $url;
-    }
-    
-    return $defaultUrl;
-}
-
 if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
-    $next_url = $session->read('return_url') ?? '/';
+    $next_url = WebsiteUtilities::sanitize_redirect_url($_GET['next'] ?? '/');
 
     $response = $oauth_service->request_token(
         $secrets_service->get(Secret::APP_URL).'/usos_oauth.php?next=' . rawurldecode($next_url)
@@ -93,7 +82,7 @@ if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
     $base_app_url = $secrets_service->get(Secret::APP_URL);
     $return_url = $_GET['next'] ?? $base_app_url;
     $session->remove('return_url');
-    $return_url = sanitize_redirect_url($return_url);
+    $return_url = WebsiteUtilities::sanitize_redirect_url($return_url);
     header("Location: $return_url");
     die();
 }
