@@ -4,25 +4,25 @@
     }
 
     .kp-header {
-        margin-top: 20%;
+        margin-top: min(200px, 20vh);
         font-weight: normal;
-        font-size: medium;
+        font-size: min(15px, 15vw);
         text-align: center;
     }
 
     .kp-header > p {
-        font-size: xxx-large;
+        padding: 0px 12px;
+        font-size: 3em;
         font-weight: bold;
         margin: 0;
     }
 
     .kp-description {
         text-align: center;
-    }
-
-    .kp-description {
+        font-size: 1em;
         margin-top: 0;
         opacity: 0.5;
+        padding: 2px 12px;
     }
 
     .kt-vote-component {
@@ -36,8 +36,8 @@
         box-sizing: border-box;
         text-align: center;
         font-family: "Roboto Mono", monospace;
-        padding: 12px 0;
-        font-size: x-large;
+        padding: 12px 8px;
+        font-size: 1em;
         border: 2px solid black;
         outline: none;
         width: 100%;
@@ -81,6 +81,7 @@
         width: 100%;
         padding-top: 12px;
         padding-bottom: 12px;
+        font-size: 1em;
     }
 
     .kt-candidate-list-el:hover {
@@ -117,9 +118,11 @@
     }
 
     .thank-you-page {
+        left: 0;
+        top: 0;
         position: absolute;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
         background-color: #4bb543;
         z-index: 100;
         display: flex;
@@ -135,8 +138,14 @@
         transition: 0.7s transform ease-in-out;
     }
 
+    .thank-you-page > h1 {
+        padding: 8px 24px;
+        font-size: 1.5em;
+    }
+
     .thank-you-page > p {
         margin-top: -10px;
+        font-size: 0.5em;
     }
 
     .thank-you-page-hidden {
@@ -253,7 +262,7 @@ function render_question() {
         currently_choosen_id = prow_id;
         $('.kt-next-btn').classList.remove('btn-disabled');
         const prow = konkurs_data['prowadzacy'].find( e => e['id'] === prow_id);
-        $(".kt-text-input").value = prow['name'];
+        $(".kt-text-input").value = prow ? prow['name'] : 'Brak głosu';
     }
 }
 
@@ -289,13 +298,13 @@ function render_voting_list(list) {
             $(".kt-candidate-list").style.display = "none";
             $(".kt-text-input").value = element.innerText;
             currently_choosen_id = element.dataset.id === "null" ? null : Number(element.dataset.id);
-            if (currently_choosen_id === null) {
+            $('.kt-next-btn').classList.remove('btn-disabled');
+            if (currently_choosen_id !== null) {
                 // disable next button
-                $('.kt-next-btn').classList.add('btn-disabled');
-            } else {
+            //     $('.kt-next-btn').classList.add('btn-disabled');
+            // } else {
                 // enable next button
-                $('.kt-next-btn').classList.remove('btn-disabled');
-                current_answer[current_question_id] =currently_choosen_id;
+                current_answer[current_question_id] = currently_choosen_id;
             }
         })
     )

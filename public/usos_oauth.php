@@ -21,9 +21,23 @@ $session = DependencyContainer::get(SessionInterface::class);
 /** @var EnvironmentInterface $environment */
 $environment = DependencyContainer::get(EnvironmentInterface::class);
 
+function sanitize_redirect_url($url, $defaultUrl = '/') {
+    if (empty($url)) {
+        return $defaultUrl;
+    }
+    
+    if (preg_match('/^\/[^\/]/', $url)) {
+        return $url;
+    }
+    
+    return $defaultUrl;
+}
+
 if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
+    $next_url = $session->read('return_url') ?? '/';
+
     $response = $oauth_service->request_token(
-        $secrets_service->get(Secret::APP_URL).'/usos_oauth.php'
+        $secrets_service->get(Secret::APP_URL).'/usos_oauth.php?next=' . rawurldecode($next_url)
     );
 
     if (!isset($response['oauth_token']) || !isset($response['oauth_token_secret'])) {
@@ -37,6 +51,7 @@ if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
     $session->write('oauth_token', $response['oauth_token']);
     $session->write('oauth_token_secret', $response['oauth_token_secret']);
 
+
     // redirect to authorize page
     $params = http_build_query($response);
     $authorize_url = "https://usosapps.uwr.edu.pl/services/oauth/authorize?$params";
@@ -47,12 +62,12 @@ if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
     $oauth_token_secret = $session->read('oauth_token_secret');
 
     if (!$oauth_token || !$oauth_token_secret) {
-        echo 'Wykryto potencjalny atak CSRF';
+        header("Location: /");
         die();
     }
 
     if ($oauth_token !== $_GET['oauth_token']) {
-        echo 'Wykryto potencjalny atak CSRF';
+        header("Location: /");
         die();
     }
 
@@ -76,9 +91,9 @@ if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
     $session->write('oauth_token_secret', $response['oauth_token_secret']);
 
     $base_app_url = $secrets_service->get(Secret::APP_URL);
-    $return_url = $session->read('return_url') ?? $base_app_url;
+    $return_url = $_GET['next'] ?? $base_app_url;
     $session->remove('return_url');
-
+    $return_url = sanitize_redirect_url($return_url);
     header("Location: $return_url");
     die();
 }

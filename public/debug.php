@@ -18,5 +18,5 @@ if (!$environment->is_developer_mode()) {
 }
 
 header('Content-Type: application/json; charset=utf-8');
-echo json_encode($auth_service->get_current_session_user()->get_data(), JSON_PRETTY_PRINT);
+echo $environment->get_current_path();
 ?>

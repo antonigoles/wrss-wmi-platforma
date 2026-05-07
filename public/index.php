@@ -19,11 +19,13 @@ $router_service->require_permissions([ Permission::DISPLAY_HOME_PAGE ]);
     <title>WRSS WMI</title>
     <link rel="stylesheet" href="/styles/style.main.css">
     <?php require_once('./styles/style-imports.php') ?>
+
 </head>
 <body>
     <div class="global-container">
         <?php require_once('./components/header.php') ?>
         <div class="main-container">
+            <a style="font-size: xxl;" href="/konkurs-prowadzacych.php"> > > > Konkurs prowadzących > > > </a>
         </div>
     </div>
 </body>

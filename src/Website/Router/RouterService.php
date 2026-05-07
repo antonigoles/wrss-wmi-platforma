@@ -34,7 +34,7 @@ class RouterService
         );
 
         if (!$permission_check) {
-            $this->session->write("return_url", $this->environment->get_unparsed_current_url());
+            $this->session->write("return_url", $this->environment->get_current_path());
             $url = $this->environment->get_app_url() . $this->unauthorized_page;
             header('Location: '.$url);
             die();

@@ -26,6 +26,11 @@ readonly class Environment implements EnvironmentInterface
         return $this->secrets_service->get(Secret::APP_URL);
     }
 
+    public function get_current_path(): string
+    {
+        return $_SERVER['REQUEST_URI'];
+    }
+
     public function get_unparsed_current_url(): string
     {
         $http = $this->is_developer_mode() ? "http" : "https";
