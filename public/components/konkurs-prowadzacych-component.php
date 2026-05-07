@@ -63,6 +63,8 @@
         overflow-x: hidden;
         border: 2px solid black;
         border-top-width: 0;
+        background-color: white;
+        z-index: 10;
     }
 
     .kt-candidate-list::-webkit-scrollbar {
@@ -92,7 +94,7 @@
 
     .kt-navigation-buttons {
         position: absolute;
-        bottom: 50px;
+        bottom: 12px;
         width: 100%;
         display: flex;
         justify-content: space-around;
