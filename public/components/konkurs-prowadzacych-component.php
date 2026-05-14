@@ -145,20 +145,24 @@
         font-size: 1.5em;
     }
 
-    .thank-you-page > p {
+    .thank-you-page > a {
         margin-top: -10px;
         font-size: 0.5em;
+        text-decoration: none;
+        color: white;
+        border: 1px solid white;
+        padding: 16px;
     }
 
     .thank-you-page-hidden {
-        transform: translateY(-100%);
+        /* transform: translateY(-100%); */
     }
 
 </style>
 
 <div class="thank-you-page thank-you-page-hidden">
     <h1> Dzięki za wypełnienie ankiety! </h1>
-    <p> Możesz teraz zamknąć te stronę </p>
+    <a href="/"> Powrót na stronę główną </a>
 </div>
 
 <div class="kp-header">

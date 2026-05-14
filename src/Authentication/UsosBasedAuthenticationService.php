@@ -31,6 +31,11 @@ readonly class UsosBasedAuthenticationService implements AuthenticationServiceIn
         return new PermissionCheckResult($permission, $user_identifier, true);
     }
 
+    public function is_logged_in(): bool
+    {
+        return !$this->oauth_service->should_reauthenticate();
+    }
+
     public function should_reauthenticate(): bool
     {
         return $this->oauth_service->should_reauthenticate();

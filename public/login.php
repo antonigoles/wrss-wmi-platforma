@@ -9,7 +9,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WRSS WMI</title>
     <link rel="stylesheet" href="/styles/style.main.css">
-    <?php require_once('./styles/style-imports.php') ?>
+    <?php require_once('./components/html-imports.php') ?>
 </head>
 <body>
     <div class="global-container">

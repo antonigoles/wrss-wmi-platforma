@@ -55,8 +55,18 @@
         text-decoration: none;
     }
 
+    .return-btn {
+        width: 900px;
+        max-width: 80%;
+        text-align: center;
+        font-size: 26px;
+        padding-top: 32px;
+        color: #00A7A6;
+    }
+
 </style>
 
+<a class="return-btn" href="/">< Cofnij</a>
 <div class="choose-konkurs">
     <h1>Dostepne głosowania</h1>
 </div>

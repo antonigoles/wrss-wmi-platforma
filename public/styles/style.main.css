@@ -290,3 +290,20 @@ a {
     padding: 5px;
     box-sizing: border-box;
 }
+
+.wrss-logo {
+    background-position: center;
+    background-size: contain;
+    background-image: url('/assets/wrsslogo.png');
+    width: 200px;
+    aspect-ratio: 1;
+    position: absolute;
+    left: 25px;
+    top: 15px;
+}
+
+@media (max-aspect-ratio: 0.77) {
+    .wrss-logo {
+        display: none;
+    }  
+}
