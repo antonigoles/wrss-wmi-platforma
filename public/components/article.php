@@ -6,7 +6,8 @@
 <style>
 
 .article-target {
-    min-height: 100%;
+    margin-top: 20px;
+    min-height: 90vh;
     width: 70%;
     max-width: 1200px;
     display: flex;

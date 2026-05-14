@@ -155,7 +155,7 @@
     }
 
     .thank-you-page-hidden {
-        /* transform: translateY(-100%); */
+        transform: translateY(-100%);
     }
 
 </style>
