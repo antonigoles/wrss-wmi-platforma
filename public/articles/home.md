@@ -1,5 +1,7 @@
 # Cześć
+[text-justify]
 Tutaj wydziałowa rada samorządu studentów wydziału matematyki i informatyki (wrss wmi) postuje swoje rzeczy.
+[/text-justify]
 
 [auth]
 [🔒 /wyloguj](/logout.php)

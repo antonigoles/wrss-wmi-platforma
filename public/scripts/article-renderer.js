@@ -16,25 +16,33 @@
     }
     content = await response.text();
 
-    showdown.extension('auth-tags', 
+    showdown.extension('custom-tags', 
         function() {
-            return [{
-                type: 'lang',
-                regex: /\[auth\]([\s\S]*?)(?:\[else\]([\s\S]*?))?\[\/auth\]/g,
-                
-                replace: function(match, loggedInContent, guestContent) {
-                    if (is_user_logged_in) {
-                        return loggedInContent;
-                    } else {
-                        return guestContent ? guestContent : '';
+            return [
+                {
+                    type: 'lang',
+                    regex: /\[auth\]([\s\S]*?)(?:\[else\]([\s\S]*?))?\[\/auth\]/g,
+                    
+                    replace: function(match, loggedInContent, guestContent) {
+                        if (is_user_logged_in) {
+                            return loggedInContent;
+                        } else {
+                            return guestContent ? guestContent : '';
+                        }
                     }
+                },
+                {
+                    type: 'lang',
+                    regex: /\[text-justify\]([\s\S]*?)\[\/text-justify\]/g,
+                    
+                    replace: '<span class="text-justify">$1</span>'
                 }
-            }];
+            ];
         }
     );
 
     const converter = new showdown.Converter({
-        extensions: ['auth-tags']
+        extensions: ['custom-tags']
     });
 
     const compiled_html = converter.makeHtml(content);

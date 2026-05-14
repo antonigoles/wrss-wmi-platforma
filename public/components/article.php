@@ -6,13 +6,14 @@
 <style>
 
 .article-target {
-    height: 100%;
+    min-height: 100%;
     width: 70%;
     max-width: 1200px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     padding: 120px 120px;
+    padding-bottom: 120px;
     /* align-items: center; */
     border: 1px solid rgba(0, 0, 0, 0.11);
     color: rgba(0, 0, 0, 0.70);
@@ -30,12 +31,17 @@
         color: #00A7A6;
         text-decoration: none;
     }
+
+    .text-justify {
+        display: inline-block;
+        text-align: justify;
+    }
 }
 
 @media (max-aspect-ratio: 0.77) {
     .article-target {
         width: 100%;
-        padding: 120px 60px;
+        padding: 20px 30px;
     }
 }
 
