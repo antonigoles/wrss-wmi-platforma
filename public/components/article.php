@@ -42,7 +42,16 @@
     .article-target {
         width: 100%;
         padding: 20px 30px;
+        font-size: 20px;
+
+        /* no justify on mobile */
+        .text-justify {
+            display: inline-block;
+            text-align: unset; 
+        }
     }
+
+    
 }
 
 </style>
